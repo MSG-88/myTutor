@@ -1,0 +1,41 @@
+connectors:
+  - type: documents
+    params:
+      root_path: "/data/docs"
+      include_exts: [".pdf", ".docx", ".pptx", ".txt"]
+
+  - type: database
+    params:
+      conn_str: "postgresql+psycopg2://user:pw@host/db"
+      tables:
+        - "transactions"
+        - "customers"
+
+  - type: server
+    params:
+      server_type: "ftp"
+      config:
+        host: "ftp.example.com"
+        username: "user"
+        password: "pass"
+
+processing:
+  max_chars: 2000
+
+task_builder:
+  type: summarization
+  params:
+    system_prompt: "You are a banking domain expert."
+
+model:
+  base_model_path: "/models/base_llm"
+  lora_r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  max_length: 2048
+
+training:
+  output_dir: "/models/banking_slm_adapter"
+  epochs: 1
+  batch_size: 1
+  lr: 0.0002
